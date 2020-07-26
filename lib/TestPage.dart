@@ -20,6 +20,7 @@ class _TestPageState extends State<TestPage>{
   TextEditingController _createController = TextEditingController();
   FileFunction _fileFunction = FileFunction();
   Storage _storageAPI = Storage();
+  List _buttonList = List<Widget>();
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class _TestPageState extends State<TestPage>{
 
   @override
   Widget build(BuildContext context) {
+
 
     return WillPopScope(
       onWillPop: ()async{return false;},
@@ -74,6 +76,26 @@ class _TestPageState extends State<TestPage>{
           stream: Storage.currentDirectoryStream,
           builder: (BuildContext context,AsyncSnapshot snapshot){
 
+            _buttonList = [];
+
+            for(int i=0;i<_storageAPI.pathStack.length;i++){
+              if(i == 0)
+                _buttonList.add(InkWell(onTap: (){_fileFunction.forceRollback(rollbackDirectory: _storageAPI.pathStack[i]);},child: Text("Root/" + "      ",style: TextStyle(fontWeight: FontWeight.bold),),));
+              if(i>=1){
+               // print(i.toString() + _storageAPI.pathStack[i]);
+               //  print((i-1).toString() + _storageAPI.pathStack[i-1]);
+                _buttonList.add(
+                    InkWell(
+                      onTap:(){_fileFunction.forceRollback(rollbackDirectory: _storageAPI.pathStack[i]);},
+                      child: Text(_storageAPI.pathStack[i].replaceAll(_storageAPI.pathStack[i-1], "") + "      ",style: TextStyle(fontWeight: FontWeight.bold),),
+                    ),
+                );
+              }
+            }
+           // _buttonList.forEach((element) {print(element);});
+           // print(_storageAPI.pathStack.toString());
+           // _storageAPI.pathStack.last.split('/').forEach((element) {print(element + "\n");});
+
             if(snapshot.hasData){
                 return Column(
                   children: [
@@ -86,7 +108,7 @@ class _TestPageState extends State<TestPage>{
                       ),
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(_storageAPI.pathStack.last,style: TextStyle(fontWeight: FontWeight.bold),),
+                        child: ListView.builder(scrollDirection: Axis.horizontal,itemCount: _buttonList.length,itemBuilder: (context,index){return _buttonList[index];}),/*Text(_storageAPI.pathStack.last,style: TextStyle(fontWeight: FontWeight.bold),),*/
                       ),
                     ),
                     snapshot.data.isEmpty ? Expanded(child: Container(child: Center(child: Text("Empty Folder"),),)) :

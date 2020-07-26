@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:file_test/BackEnd/Storage.dart';
-import 'package:file_test/DataModel/APIResponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
@@ -32,6 +31,21 @@ class FileFunction
       }
     });
   }
+
+  Future<dynamic> forceRollback({@required String rollbackDirectory}){
+    for(int i=_storageAPI.pathStack.length -1;_storageAPI.pathStack[i] != rollbackDirectory;i--){
+      print("ip");
+      _storageAPI.pathStack.removeAt(i);
+    }
+    print("Path Stack after removal : " + _storageAPI.pathStack.toString());
+    _storageAPI.currentDirectory = rollbackDirectory;
+    Directory(rollbackDirectory).list().toList().then((newList){
+      print("Updating Stream");
+      Storage.currentDirectorySink.add(newList);
+      print("Stream Updated Successfully");
+    });
+  }
+
 
   Future<dynamic> copyDirectory({@required FileSystemEntity file,@required String destinationPath}){
 
