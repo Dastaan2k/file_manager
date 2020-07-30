@@ -31,7 +31,7 @@ class Storage
 
   factory Storage(){
     if(_storageInstance == null){
-
+      print("Instantiated");
       _storageInstance = Storage._internal();
       _storageInstance.rootDirectory = "/storage/emulated/0/";
       Directory(_storageInstance.rootDirectory).list().toList().then((list){currentDirectorySink.add(list);});
