@@ -26,14 +26,14 @@ class _TestPageState extends State<TestPage>{
 
   @override
   void initState() {
-    print("Test Page");
     // TODO: implement initState
     super.initState();
-
+    //File('storage/emulated/0/Music/text.text').create(recursive: true);
+    //_storageAPI.searchList.forEach((element){print(element);});
+   // _fileFunction.getEntityDetails(Directory('storage/emulated/0/Download')).then((entity){entity.printEntity();});
    /// RuntimeTypes :
     /// Directory : _Directory
     /// File : _File
-
   }
 
   @override
@@ -46,12 +46,13 @@ class _TestPageState extends State<TestPage>{
   @override
   Widget build(BuildContext context) {
 
-
     return WillPopScope(
       onWillPop: ()async{return false;},
       child: Scaffold(
         appBar: AppBar(
-          actions: [IconButton(icon: Icon(Icons.add,color: Colors.white,),onPressed: (){
+          actions: [
+            IconButton(icon: Icon(Icons.add,color: Colors.white,),onPressed: (){
+           // _fileFunction.sortDirectory(Directory(_storageAPI.pathStack.last),"SIZE","DES");
             showDialog(context: context,builder: (context){
               return AlertDialog(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -59,8 +60,8 @@ class _TestPageState extends State<TestPage>{
                 actions: [
                   FlatButton(child: Text("Cancel"),onPressed: (){_createController.text = "";Navigator.pop(context);},),
                   FlatButton(child: Text("Confirm"),onPressed: (){
-                    print(_createController.text);
-                    _fileFunction.createDirectory(newDirectoryName: _createController.text).then((value){_createController.text = "";Navigator.pop(context);});},)
+                  //  print(_createController.text);
+                    _fileFunction.createDirectory(newDirectoryName: "/" + _createController.text).then((value){_createController.text = "";Navigator.pop(context);});},)
                 ],
                 title: Column(
                   children: [
@@ -70,8 +71,9 @@ class _TestPageState extends State<TestPage>{
                 ),
               );
             });
-          },)],
-          leading: IconButton(icon: Icon(Icons.arrow_back,color: Colors.white,),onPressed: (){_fileFunction.exitDirectory(context);},),
+          },)
+          ],
+          leading: IconButton(icon: Icon(Icons.arrow_back,color: Colors.white),onPressed: (){_fileFunction.exitDirectory(context);},),
           title: Text("Chindi File Manager",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
         ),
         body: StreamBuilder(
@@ -81,22 +83,18 @@ class _TestPageState extends State<TestPage>{
             _buttonList = [];
 
             for(int i=0;i<_storageAPI.pathStack.length;i++){
-              if(i == 0)
+              if(i == 0){
                 _buttonList.add(InkWell(onTap: (){_fileFunction.forceRollback(rollbackDirectory: _storageAPI.pathStack[i]);},child: Text("Root/" + "      ",style: TextStyle(fontWeight: FontWeight.bold),),));
+              }
               if(i>=1){
-               // print(i.toString() + _storageAPI.pathStack[i]);
-               //  print((i-1).toString() + _storageAPI.pathStack[i-1]);
                 _buttonList.add(
                     InkWell(
                       onTap:(){_fileFunction.forceRollback(rollbackDirectory: _storageAPI.pathStack[i]);},
-                      child: Text(_storageAPI.pathStack[i].replaceAll(_storageAPI.pathStack[i-1], "") + "      ",style: TextStyle(fontWeight: FontWeight.bold),),
+                      child: SingleChildScrollView(scrollDirection: Axis.horizontal,child: Text(_storageAPI.pathStack[i].replaceAll(_storageAPI.pathStack[i-1], "") + "      ",style: TextStyle(fontWeight: FontWeight.bold),)),
                     ),
                 );
               }
             }
-           // _buttonList.forEach((element) {print(element);});
-           // print(_storageAPI.pathStack.toString());
-           // _storageAPI.pathStack.last.split('/').forEach((element) {print(element + "\n");});
 
             if(snapshot.hasData){
                 return Column(
@@ -137,7 +135,7 @@ class _TestPageState extends State<TestPage>{
 
   Widget _fileCard(dynamic file)      /// CAN BE A FILE OR A DIRECTORY
   {
-    String fileName = file.path.replaceAll(_storageAPI.currentDirectory, "");
+    String fileName = file.path.replaceAll(_storageAPI.currentDirectory + "/", "");
       return InkWell(
         onTap: (){_fileFunction.enterDirectory(newDirectory: file );},
         child: Stack(
@@ -264,7 +262,7 @@ class _TestPageState extends State<TestPage>{
                           actions: [
                             FlatButton(child: Text("Cancel"),onPressed: (){_copyController.text = "";Navigator.pop(context);},),
                             FlatButton(child: Text("Paste"),onPressed: (){
-                              _fileFunction.copyDirectory(file: file, destinationPath: _copyController.text).then((value){print("Pop");_copyController.text = "";Navigator.pop(context);});
+                              _fileFunction.copyEntity(entity: file, destinationPath: _copyController.text).then((value){print("Pop");_copyController.text = "";Navigator.pop(context);});
                             },key: Key("FlatButton1"),),
                           ],
                           title: Column(
@@ -294,7 +292,7 @@ class _TestPageState extends State<TestPage>{
                           actions: [
                             FlatButton(child: Text("Cancel"),onPressed: (){_moveController.text = "";Navigator.pop(context);},),
                             FlatButton(child: Text("Move"),onPressed: (){
-                              _fileFunction.moveDirectory(file: file, destinationPath: _moveController.text).then((value){_moveController.text = "";Navigator.pop(context);});
+                              _fileFunction.moveEntity(entity: file, destinationPath: _moveController.text).then((value){_moveController.text = "";Navigator.pop(context);});
                             },)
                           ],
                           title: Column(

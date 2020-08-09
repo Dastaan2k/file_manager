@@ -1,4 +1,5 @@
 import 'package:file_test/BackEnd/FileFunctions.dart';
+import 'package:file_test/SearchTestPage.dart';
 import 'package:file_test/TestPage.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: TestPage(),
+      home: TestPage(),//SearchTestPage(),
     );
   }
 }
