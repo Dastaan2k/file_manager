@@ -10,14 +10,13 @@ class Entity
   int childDirQuantity;
   int childFileQuantity;
 
-  Entity({@required this.path,this.size,@required this.type,this.childDirQuantity = 0,this.childFileQuantity = 1}){
+  Entity({@required this.path,this.size = 0,@required this.type,this.childDirQuantity = 0,this.childFileQuantity = 0}){
     name = path.split('/').last;
   }
 
   void printEntity(){
     print("Entity Details : " + "\nName : $name \nPath : $path \nType : $type \nSize : $size B\nChild Directories : $childDirQuantity \nChild Files : $childFileQuantity");
   }
-
 }
 
 class SearchEntity

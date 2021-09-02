@@ -61,7 +61,7 @@ class _TestPageState extends State<TestPage>{
                   FlatButton(child: Text("Cancel"),onPressed: (){_createController.text = "";Navigator.pop(context);},),
                   FlatButton(child: Text("Confirm"),onPressed: (){
                   //  print(_createController.text);
-                    _fileFunction.createDirectory(newDirectoryName: "/" + _createController.text).then((value){_createController.text = "";Navigator.pop(context);});},)
+                   /* _fileFunction.createDirectory(newDirectoryName: "/" + _createController.text).then((value){_createController.text = "";Navigator.pop(context);});*/},)
                 ],
                 title: Column(
                   children: [
@@ -137,7 +137,7 @@ class _TestPageState extends State<TestPage>{
   {
     String fileName = file.path.replaceAll(_storageAPI.currentDirectory + "/", "");
       return InkWell(
-        onTap: (){_fileFunction.enterDirectory(newDirectory: file );},
+        onTap: (){/*_fileFunction.enterDirectory(newDirectory: file );*/},
         child: Stack(
           children: [
             Container(
@@ -207,7 +207,7 @@ class _TestPageState extends State<TestPage>{
                           content: Text("Pakka delete karnay ?"),
                           actions: [
                             FlatButton(child: Text("No",style: TextStyle(color: Colors.red),),onPressed: (){Navigator.pop(context);},),
-                            FlatButton(child: Text("Yes",),onPressed: (){_fileFunction.deleteDirectory(directory: file).then((value){Navigator.pop(context);});},),
+                         ///   FlatButton(child: Text("Yes",),onPressed: (){_fileFunction.deleteDirectory(directory: file).then((value){Navigator.pop(context);});},),
                           ],
                         );
                       });
@@ -232,7 +232,7 @@ class _TestPageState extends State<TestPage>{
                               actionsPadding: EdgeInsets.symmetric(horizontal: 10),
                               actions: [
                                 FlatButton(child: Text("Cancel"),onPressed: (){_renameController.text = "";Navigator.pop(context);},),
-                                FlatButton(child: Text("Confirm"),onPressed: (){_fileFunction.renameDirectory(file, _renameController.text).then((value){_renameController.text = "";Navigator.pop(context);});},)
+                                //FlatButton(child: Text("Confirm"),onPressed: (){_fileFunction.renameDirectory(file, _renameController.text).then((value){_renameController.text = "";Navigator.pop(context);});},)
                               ],
                               title: Column(
                                 children: [
@@ -262,7 +262,7 @@ class _TestPageState extends State<TestPage>{
                           actions: [
                             FlatButton(child: Text("Cancel"),onPressed: (){_copyController.text = "";Navigator.pop(context);},),
                             FlatButton(child: Text("Paste"),onPressed: (){
-                              _fileFunction.copyEntity(entity: file, destinationPath: _copyController.text).then((value){print("Pop");_copyController.text = "";Navigator.pop(context);});
+                             // _fileFunction.copyEntity(entity: file, destinationPath: _copyController.text).then((value){print("Pop");_copyController.text = "";Navigator.pop(context);});
                             },key: Key("FlatButton1"),),
                           ],
                           title: Column(
@@ -292,7 +292,7 @@ class _TestPageState extends State<TestPage>{
                           actions: [
                             FlatButton(child: Text("Cancel"),onPressed: (){_moveController.text = "";Navigator.pop(context);},),
                             FlatButton(child: Text("Move"),onPressed: (){
-                              _fileFunction.moveEntity(entity: file, destinationPath: _moveController.text).then((value){_moveController.text = "";Navigator.pop(context);});
+                            ///  _fileFunction.moveEntity(entity: file, destinationPath: _moveController.text).then((value){_moveController.text = "";Navigator.pop(context);});
                             },)
                           ],
                           title: Column(
